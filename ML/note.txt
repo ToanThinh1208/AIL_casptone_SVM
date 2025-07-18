@@ -1,0 +1,35 @@
+Bert sẽ tốt cho bài toán phân loại từ 1 -> 5 
+Llama sẽ tốn nhiều tài nguyên
+LSTM sẽ phân loại tốt khi trong bài toán nhị phân
+
+Nhiệm vụ cần làm:
+- Deep Learning:
+    + Xây dựng mô hình Bert
+    + Xây dựng mô hình LSTM
+- Machine Learning:
+    + Cải thiện: thêm bước xử lý PCA
+
+    #dùng PCA + Word2Vec + TF-IDF + SMOTE: acc = 0.65
+#dùng Word2Vec + TF-IDF + SMOTE: acc = 0.63
+
+
+Khi chuyển các nhã từ 1-5 về 0-4, model có xu hướng bỏ qua các lớp 5* (4*)
+Ghi nhận lần 1:
+    epochs = 1
+    batch_size = 32
+    grad_accumulation_steps = 2
+    Validation Loss: 0.6019, Accuracy: 0.7671
+=> Nhận diện tốt ở 1 5, 3 4 còn lẫn lộn nhưng tốt hơn ML, lớp 2 hầu như bỏ qua
+Mô hình đạt độ chính xác 77%, nhưng macro F1-score chỉ 0.54, cho thấy sự mất cân bằng giữa các lớp.
+ Lớp 4★ có độ chính xác cao nhất, trong khi lớp 1★ bị bỏ sót nhiều do Recall thấp (0.17). 
+
+Ghi nhận lần 2:
+    epochs = 5
+    batch_size = 32
+    grad_accumulation_steps = 2
+    Training Loss: 0.4880
+    Validation Loss: 0.6369, Accuracy: 0.7710
+=> Mô hình phân loại xếp hạng sao đạt độ chính xác 77%, nhưng gặp vấn đề về mất cân bằng dữ liệu.
+    Lớp 5 sao được nhận diện tốt nhất với F1-score 0.89, trong khi lớp 1 sao có recall rất thấp (0.17).
+    Mô hình có xu hướng nhầm các đánh giá thấp thành 5 sao, đặc biệt là 2, 3, 4 sao.
+    Lớp 2 hầu như bị bỏ qua
